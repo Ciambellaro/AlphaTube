@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>random 2</title>
+    <meta charset="UTF-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://apis.google.com/js/client.js"></script>
+</head>
+
+<body>
+
+    <div id="song_name_container"></div>
+    <div id="root">
+        <div class="flex-video widescreen" style="margin: 0 auto; text-align:center;">
+            <iframe id="id_vid" width="560" height="315" src="" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <div id='containerRelated'></div>
+    </div>
+    <div id="result"></div>
+
+    <script type="text/javascript">
+        /*    
+        var CLIENTID = "Eq8KSecb2Yz4Lq--EUjuGWH_8OifHCRwdwHr1ztKdLx5Qk_zCZG--AXPSQzMXhL-";
+        var CLIENTSECRET = "-3Ynmxt9BZab3Qs5sbr_GdzGxXoGqSqbSISFuEQwquYeVm-5-A3nFIcgUOvDSY731GT-hhJtvTK5jYDccT7juQ";
+        var accessToken = "?access_token=CXyFeSBw2lAdG41xkuU3LS6a_nwyxwwCz2dCkUohw-rw0C49x2HqP__6_4is5RPx";
+        var API = "https://api.genius.com/search";
+        var APISong = "https://api.genius.com/songs/";
+        var songID = "2471960";
+        var maxSong = 2471960;
+
+        function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        //https://api.genius.com/search?q=Kendrick%20Lamar
+        var xhr = new XMLHttpRequest(); //XML HTTP Request
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4) {
+                if (xhr.status === 200 || xhr.status === 304) {
+                    // Success! Do stuff with data.
+                    //console.log(xhr.responseText); 
+                }
+            }
+        };
+        xhr.open("GET", APISong + songID + accessToken, false);
+        //xhr.open("GET", API+accessToken+ '&q=Kendrick%20Lamar', false);
+
+        xhr.send();
+        //console.log(xhr.status);
+        //console.log(xhr.statusText);
+        demo = xhr.response;
+
+        var json = JSON.parse(demo);
+        var song = json['response']['song'];
+
+
+        function newRandomSong() {
+            songID = getRandomInt(1, maxSong);
+            randomSong();
+        }
+
+        function randomSong() {
+            xhr.open("GET", APISong + songID + accessToken, false);
+            xhr.send();
+            demo = xhr.response;
+
+            while (xhr.status === 404) { //Checks if the Random Song Exists
+                songID = getRandomInt(1, maxSong);
+                xhr.open("GET", APISong + songID + accessToken, false);
+                xhr.send();
+                demo = xhr.response;
+            }
+
+            json = JSON.parse(demo);
+            song = json['response']['song'];
+
+
+            document.getElementById("song_name_container").innerHTML = "SONG: <a target=\"_blank\" href=" + song['url'] + " >" + song['title'].toUpperCase() + "</a>";
+
+
+            document.getElementById("song_artist_container").innerHTML = "ARTIST: <a target=\"_blank\"  href=" + song['primary_artist']['url'] + ">" + song['primary_artist']['name'].toUpperCase() + "</a>";
+
+            
+
+
+        }
+
+
+
+        //  METODO CON API GENIUS
+        $(document).ready(function() {
+            newRandomSong();
+            alert(song['title']);
+            var idvideo = "-vH2eZAM30s";
+
+            var query = song['title'] + " " + song['primary_artist']['name'];
+            
+            $.get('https://www.googleapis.com/youtube/v3/search', {
+                part:'snippet',
+                key: 'AIzaSyB-M6EmiCP16GzQBp50_u8ElxTDZqwjqSQ',
+                maxResults: 1,
+                q: query,
+                type: 'video',
+                videoCategoryId:'10'
+            }).done(function(data) {
+                var urlvid = "https://www.youtube.com/embed/" + data.items[0].id.videoId;
+                $("#id_vid").attr('src', urlvid);
+                $('#song_name_container').append(data.items[0].snippet.title);
+            });
+        });
+*/
+
+        $(document).ready(function() {
+            var videoObj = '';  //Oggetto video che mi serve per catturare i dati del video principale
+            var start = new Date(2010, 0, 1);   //inizio intervallo data di ricerca
+            var end = new Date();   //fine intervallo data di ricerca
+            var date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+            var rfcDateBefore = date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate() + 'T01:00:00Z'    //data in formato RFC
+            var rfcDateAfter = date.getFullYear() + '-' + parseInt(date.getMonth() - 1) + '-' + date.getDate() + 'T01:00:00Z'
+            //alert(rfcDateBefore);
+            //alert(rfcDateAfter);
+
+            //  ********* GET PER RICAVARE I VIDEO RANDOM *********
+            $.get('https://www.googleapis.com/youtube/v3/search', {
+                part: 'snippet',
+                key: 'AIzaSyB-M6EmiCP16GzQBp50_u8ElxTDZqwjqSQ',
+                maxResults: 50,
+                type: 'video',
+                videoCategoryId: '10', //10 = categoria musica
+                videoEmbeddable: true,
+                publishedAfter: rfcDateAfter,
+                publishedBefore: rfcDateBefore,
+                region: 'IT'
+            }).done(function(data) {
+                var nRandom = Math.round(Math.random() * 100 % 50)+1; //numero random da 1 a 50
+                videoObj = data.items[nRandom];
+                var urlvid = "https://www.youtube.com/embed/" + videoObj.id.videoId; //url video completo 
+                $("#id_vid").attr('src', urlvid); 
+                $('#song_name_container').append(videoObj.snippet.title);
+
+
+                //  ********* GET PER RICAVARE I VIDEO CORRELATI *********
+                $.get('https://www.googleapis.com/youtube/v3/search', {
+                    part: 'snippet',
+                    key: 'AIzaSyB-M6EmiCP16GzQBp50_u8ElxTDZqwjqSQ',
+                    maxResults: 10,
+                    type: 'video',
+                    videoCategoryId: '10',
+                    relatedToVideoId: videoObj.id.videoId
+                }).done(function(data) {
+                    var createVideoList = "";
+                    for (var i = 0; i < 10; i++) {
+                        /*
+                        createVideoList += "<object width='500' height='350'><param name='movie' value='http://www.youtube.com/v/'" + videoObj.id.videoId + "></param><param name='allowFullScreen' value='true'></param><param name='allowscriptaccess' value='always'></param><embed id='id_vid'" + i + " src='http://www.youtube.com/v/'" + videoObj.id.videoId + " type='application/x-shockwave-flash' allowscriptaccess='always' allowfullscreen='true' width='500' height='350'></embed></object><br>";
+                        */
+                        createVideoList += "<iframe id='id_vid" + i + "' width='560' height='315' src='https://www.youtube.com/embed/" + data.items[i].id.videoId + "' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe><br>";
+                    }
+                    $('#containerRelated').append(createVideoList);
+                });
+            });
+        });
+
+        //  METODO RELATED
+
+        /*
+                    $.ajax({
+                        type: "GET",
+                        url: "https://www.googleapis.com/youtube/v3/videos?id= " + idvideo + "&key=AIzaSyB-M6EmiCP16GzQBp50_u8ElxTDZqwjqSQ&part=snippet,contentDetails,statistics,status",
+                        dataType: "json",
+                        success: function(data) {
+
+                        }
+                    });
+
+
+                        gapi.client.setApiKey("AIzaSyB-M6EmiCP16GzQBp50_u8ElxTDZqwjqSQ");
+                        //window.setTimeout(loadYT, 1);
+                        alert("cazzo1")
+                        function loadYT () { gapi.client.load("youtube", "v3", viewYoutubeResources } 
+                        function viewYoutubeResources () { 
+                            alert("cazzo2");
+                            // prepare the request
+                            var request = gapi.client.youtube.search.list({
+                                part: "snippet",
+                                type: "video",
+                                q: encodeURIComponent(song['title'] + " " + song['primary_artist']['name']).replace(/%20/g, "+"),
+                                maxResults: 1,
+                                order: "viewCount"
+                            });
+                            // execute the request
+                            request.execute(function(response) {
+                                var results = response.result;
+                                $.each(results.items, function(index, item) {
+                                    alert(item.snippet.title + " ---- " + item.id.videoId);
+                                    //$("#results").append(item.snippet.title + " " + item.id.videoId);
+                                });
+                                //resetVideoHeight();
+                            });
+
+                        }
+        */
+    </script>
+
+</body>
+
+</html>
