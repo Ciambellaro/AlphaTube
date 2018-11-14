@@ -1,0 +1,35 @@
+#navbar{
+	position: absolute;
+	width :100%;
+	height: 50px;
+	background-color: blue;
+	top: 0px;
+	left: 0px;
+}
+
+
+#player {
+	width: 45%;
+    position: absolute;
+    top: 80px;
+    left: 
+    40px;
+    background-color: coral;
+}
+
+#titolovid{
+	position: absolute;
+	width: 45%;
+	height: 45px;
+	left: +40px;
+	top: 445px;
+	background-color: green;
+}
+#infotab{
+	position: absolute;
+	width: 45%;
+	height: 300px;
+	top: 500px;
+	left: 40px;
+	background-color: yellow;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	    <script type="text/javascript">
+
+	    	$(document).ready(function() {
+				var request = $.ajax({
+					url: "video.json",
+					type: 'GET',
+					dataType: "json",
+  					success:function(result){
+  						var arr = eval('(' + JSON.stringify(result) + ')');
+                     	var strOutput = '';
+
+                     	document.getElementById('info').innerHTML = arr[0].title;
+
+                     	/*for (var i=0; i < arr.video.length; i++) {
+                    		strOutput += arr.video[i].title + " - " + arr.video[i].artist + " ";
+                    		strOutput += arr.video[i].album + "<br />";
+                		}*/
+  										
+  								}
+  					error:function(result) {
+  					alert("JSON file unreachable");
+  				}	 			
+                }	);
+            }				
+	    </script>
+</head>
+
+<body> 
+<h1>TITOLO:<tbody id="info"></tbody></h1>
+<h1>ARTISTA:</h1>
+<h1>ALBUM:</h1>
+
+<!-- javascript per il caricamento del file JSON -->
+
+</body>
+</html>

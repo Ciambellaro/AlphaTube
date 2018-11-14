@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Prova infoVid</title>
+</head>
+<body>
+<script> 
+	var idVid = 'rwmCcwVh62E';      
+    var titloVid="TITOLO";
+	function stampainfo(){
+		$.ajax({
+			type: "GET",
+  			dataType: "json",
+  			url: URL: "https://www.googleapis.com/youtube/v3/videos?id= " + idVid + "&key=AIzaSyAh6dqWLmaRoAVRpy0j8cIJyWe4ZVpGC-Y&part=snippet,contentDetails,statistics,status",
+  			data: infojson,
+  			success: function(data){
+    					titolovid = data.items[0].title;
+    					alert(titolovid);
+  					}
+		});
+
+	}
+
+</script>
+<p>Stampare le info del video:</p>
+</body>
+</html>
